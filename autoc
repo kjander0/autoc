@@ -5,6 +5,8 @@ import sys
 # <statement> = <assignment> |
 #               <expression>
 
+# Want to parse into a tree that allows type checking/inference, and translating to C.
+
 def parse_statement(state):
     while state.src[state.offset].isspace():
         state.offset += 1
@@ -29,9 +31,21 @@ def parse_identifier(state):
         end_offset += 1
     if state.offset == end_offset:
         state.error = "expected identiier"
+        return None
     ident = state.src[state.offset:end_offset]
     state.offset = end_offset
     return ident
+
+def parse_assignment(state):
+    ident = parse_identifier(state)
+    while state.src[state.offset].isspace():
+        state.offset += 1
+    if state.src[state.offset] != '=':
+        state.error = "expected '=' for assignment"
+        return None
+    expr = parse_expression(state):
+    while state.src[state.offset].isspace():
+        state.offset += 1
 
 def parse_expression(state):
     pass
