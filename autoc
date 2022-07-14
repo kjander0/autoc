@@ -6,8 +6,8 @@ import sys
 #               <expression>
 
 def parse_statement(state):
-    while state.src[offset].iswhitespace():
-        offset += 1
+    while state.src[state.offset].isspace():
+        state.offset += 1
 
     # if we find an identifier then it must be an assignment
     identifier = peek_identifier(state)
@@ -15,29 +15,36 @@ def parse_statement(state):
         ass = parse_assignment(state)
     else:
         expr = parse_expression(state)
-    checkError(state)
+    check_error(state)
 
 def peek_identifier(state):
     start_offset = state.offset 
-    ident = parse_identifier()
+    ident = parse_identifier(state)
+    state.error = None
     state.offset = start_offset
 
 def parse_identifier(state):
     end_offset = state.offset
-    while state.src[offset].isalnum():
+    while state.src[end_offset].isalnum():
         end_offset += 1
+    if state.offset == end_offset:
+        state.error = "expected identiier"
+    ident = state.src[state.offset:end_offset]
     state.offset = end_offset
-    return state.src[offset:end_offset]
+    return ident
+
+def parse_expression(state):
+    pass
 
 def check_error(state):
     if state.error is None:
         return
-    print(state.error)
-    sys.exit()
+    print(state.error, file=sys.stderr)
+    sys.exit(1)
 
 class State:
     pass
-
+import pdb;pdb.set_trace()
 state = State()
 state.offset = 0
 state.src = \
