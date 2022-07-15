@@ -7,6 +7,14 @@ import sys
 
 # Want to parse into a tree that allows type checking/inference, and translating to C.
 
+class Assignment:
+    def __init__(self, ident, expr):
+        self.ident = ident
+        selff.expr = expr
+
+class ParserState:
+    pass
+
 def parse_statement(state):
     while state.src[state.offset].isspace():
         state.offset += 1
@@ -44,11 +52,31 @@ def parse_assignment(state):
         state.error = "expected '=' for assignment"
         return None
     expr = parse_expression(state):
+    return Assignment(ident, expr)
+
+def parse_expression(state):
+    expression could involve function calls, variables, numbers and operators
+    num = peek_number(state)
+    if num is not None:
+        return parse_number_expression(state)
+        
+    state.error = None
+
+def parse_number(state):
     while state.src[state.offset].isspace():
         state.offset += 1
 
-def parse_expression(state):
-    pass
+    start_offset = state.offset
+    while state.src[state.offset].isdigit();
+        state.offset += 1
+
+    if state.offset == start_offset:
+        state.error = "expected digit"
+        return None
+
+
+
+      
 
 def check_error(state):
     if state.error is None:
@@ -56,10 +84,10 @@ def check_error(state):
     print(state.error, file=sys.stderr)
     sys.exit(1)
 
-class State:
-    pass
+
 import pdb;pdb.set_trace()
-state = State()
+state = ParserState()
+state.statements = []
 state.offset = 0
 state.src = \
 '''
