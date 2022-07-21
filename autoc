@@ -1,98 +1,21 @@
 #!/bin/python3
 
 import sys
+import parser
 
-# <statement> = <assignment> |
-#               <expression>
+src = '''
 
-# Want to parse into a tree that allows type checking/inference, and translating to C.
+a = 200 + 2 + 3 + 4 + 4 + 123456789
 
-class Assignment:
-    def __init__(self, ident, expr):
-        self.ident = ident
-        selff.expr = expr
+'''
 
-class ParserState:
-    pass
+import pdb; pdb.set_trace()
 
-def parse_statement(state):
-    while state.src[state.offset].isspace():
-        state.offset += 1
+err, program = parser.parse(src)
 
-    # if we find an identifier then it must be an assignment
-    identifier = peek_identifier(state)
-    if identifier is not None:
-        ass = parse_assignment(state)
-    else:
-        expr = parse_expression(state)
-    check_error(state)
-
-def peek_identifier(state):
-    start_offset = state.offset 
-    ident = parse_identifier(state)
-    state.error = None
-    state.offset = start_offset
-
-def parse_identifier(state):
-    end_offset = state.offset
-    while state.src[end_offset].isalnum():
-        end_offset += 1
-    if state.offset == end_offset:
-        state.error = "expected identiier"
-        return None
-    ident = state.src[state.offset:end_offset]
-    state.offset = end_offset
-    return ident
-
-def parse_assignment(state):
-    ident = parse_identifier(state)
-    while state.src[state.offset].isspace():
-        state.offset += 1
-    if state.src[state.offset] != '=':
-        state.error = "expected '=' for assignment"
-        return None
-    expr = parse_expression(state):
-    return Assignment(ident, expr)
-
-def parse_expression(state):
-    expression could involve function calls, variables, numbers and operators
-    num = peek_number(state)
-    if num is not None:
-        return parse_number_expression(state)
-        
-    state.error = None
-
-def parse_number(state):
-    while state.src[state.offset].isspace():
-        state.offset += 1
-
-    start_offset = state.offset
-    while state.src[state.offset].isdigit();
-        state.offset += 1
-
-    if state.offset == start_offset:
-        state.error = "expected digit"
-        return None
-
-
-
-      
-
-def check_error(state):
-    if state.error is None:
-        return
-    print(state.error, file=sys.stderr)
+if err:
+    print(', '.join(err), file=sys.stderr)
     sys.exit(1)
 
-
-import pdb;pdb.set_trace()
-state = ParserState()
-state.statements = []
-state.offset = 0
-state.src = \
-'''
-
-a = 2
-
-'''
-parse_statement(state)
+for s in program:
+    print(s)
