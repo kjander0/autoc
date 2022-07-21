@@ -2,6 +2,7 @@
 
 import sys
 import parser
+import codegen
 
 src = '''
 
@@ -19,3 +20,5 @@ if err:
 
 for s in program:
     print(s)
+
+print(codegen.gen(program))
